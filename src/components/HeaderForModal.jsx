@@ -17,7 +17,7 @@ const HeaderForModal = (props) => {
            >
                 <IconArrowBackCircleOutline color='#C3C3C3' height = '50px' width='50px'/>
            </Pressable>
-           <Text style = {{fontSize: 38, color: '#C3C3C3'}}>{props.title}</Text>
+           <Text style = {[{color: '#C3C3C3'}, props.fontSize]}>{props.title}</Text>
         </View>
     );
 }
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 10,
     gap: 10,
-
+    alignItems: 'center'
    },
 
 });
