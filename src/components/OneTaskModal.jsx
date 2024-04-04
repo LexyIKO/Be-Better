@@ -50,7 +50,7 @@ const OneTaskModal = (props) => {
     };
 
     function ChangeTaskStatus (){
-        
+        props.onStatusChanged();
     }
     
 

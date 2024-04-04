@@ -61,8 +61,8 @@ const MiniTaskBox = (props) => {
        style = {styles.container}
        onPress={openModal}
        >
-            <View style = {props.el.isCompleted ? {border: '2px solid green',  padding: 10, width: '100%'}
-            : {padding: 10, border: '2px solid red', width: '100%'}}> 
+            <View style = {props.el.isCompleted ? {opacity: 0.5,  padding: 10, width: '100%'}
+            : {opacity: 1, padding: 10, width: '100%'}}> 
                 <Text style = {styles.taskBox}>{props.el.title}</Text>
                 <Text style = {styles.timer}>На выполнение: {getRemaningTime()}</Text>
             </View>

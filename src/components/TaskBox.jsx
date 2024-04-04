@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Text, SafeAreaView, View, TextInput, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 import ModalDefaultTasks from './ModalDefaultTasks';
+import ModalAdminTasks from './ModalAdminTasks';
 
 const TaskBox = (props) => {
     const [ModalDefaultTasksVisability, SetModalDefaultTaskVisability] = useState(false)
@@ -20,13 +21,17 @@ const TaskBox = (props) => {
         SetModalDefaultTaskVisability(!ModalDefaultTasksVisability)
     }
 
+    function closeAdminModal (){
+        SetModalAdminTaskVisability(!ModalAdminTasksVisability)
+    }
+
     return(
         <Pressable style = {[styles.container, props.style]}
         onPress={setModalVisability}
         >
             <Text style = {styles.text}>{props.text}</Text>
             <ModalDefaultTasks visability = {ModalDefaultTasksVisability} onCloseModal = {closeDefaultModal}/>
-
+            <ModalAdminTasks visability = {ModalAdminTasksVisability} onCloseModal = {closeAdminModal}/>
         </Pressable>
     );
 }
