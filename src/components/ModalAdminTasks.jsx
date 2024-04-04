@@ -8,6 +8,7 @@ import OneTaskModal from './OneTaskModal';
 const ModalAdminTasks = (props) => {
  
     const [taskList, setTaskList] = useState([]);
+    const [SortedTaskList, SetSortedTaskList] = useState([])
 
     const [OneTaskVisability, SetOneTaskVisible] = useState(false); 
 
@@ -31,6 +32,21 @@ const ModalAdminTasks = (props) => {
         getTaskList()
     }, [])
 
+    useEffect(() => {
+        // Сортировка taskList после загрузки
+        const sortedTaskList = [...taskList].sort((a, b) => {
+            // Сначала сортируем по isCompleted (false сначала)
+            if (a.isCompleted === b.isCompleted) {
+                return 0;
+            } else if (a.isCompleted === false) {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
+        SetSortedTaskList(sortedTaskList);
+    }, [taskList])
+
     const [CurrentTask, SetCurrentTask] = useState({});
 
     const openTaskModal = (obj) => {
@@ -51,7 +67,7 @@ const ModalAdminTasks = (props) => {
 
             <View style = {styles.container}>
                 <FlatList
-                data={taskList}
+                data={SortedTaskList}
                 renderItem = {({item}) => (<MiniTaskBox el = {item} onPressed={() => openTaskModal(item)} />)}
                 style = {styles.flatlist}
                 

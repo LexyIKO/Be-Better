@@ -7,6 +7,7 @@ import OneTaskModal from './OneTaskModal';
 const ModalDefaultTasks = (props) => {
  
     const [taskList, setTaskList] = useState([]);
+    const [SortedTaskList, SetSortedTaskList] = useState([])
 
     const [OneTaskVisability, SetOneTaskVisible] = useState(false); 
 
@@ -18,20 +19,22 @@ const ModalDefaultTasks = (props) => {
         {id: 0, key: 'lalala', title: 'hello world', description: 'Выйти ночью в поле с конем, ночкой темной тихо вдвоем', time: 'April 17, 2024 00:00:00', isCompleted: true},
         {id: 1, key: 'hahaha', title: 'My name uwewewe onit uwewe', description: 'Посмотреть где можно закупиться по скидке, да так, чтобы еще на послезавтра деньги остались', time: '2024, 10, 2', isCompleted: false},
         {id: 2, key: 'blabla', title: 'Мне сегодня 7 лет', description: 'Пожевать жувачку', time: '12/06/2024', isCompleted: false},
+        {id: 33, key: 'lalasla', title: 'hello world', description: 'Выйти ночью в поле с конем, ночкой темной тихо вдвоем', time: 'April 17, 2024 00:00:00', isCompleted: true},
+        {id: 4, key: 'hahafha', title: 'My name uwewewe onit uwewe', description: 'Посмотреть где можно закупиться по скидке, да так, чтобы еще на послезавтра деньги остались', time: '2024, 10, 2', isCompleted: false},
+        {id: 5, key: 'blablga', title: 'Мне сегодня 7 лет', description: 'Пожевать жувачку', time: '12/06/2024', isCompleted: false},
+        {id: 6, key: 'lalajla', title: 'hello world', description: 'Выйти ночью в поле с конем, ночкой темной тихо вдвоем', time: 'April 17, 2024 00:00:00', isCompleted: true},
+        {id: 7, key: 'hahakha', title: 'My name uwewewe onit uwewe', description: 'Посмотреть где можно закупиться по скидке, да так, чтобы еще на послезавтра деньги остались', time: '2024, 10, 2', isCompleted: false},
+        {id: 8, key: 'blab;lla', title: 'Мне сегодня 7 лет', description: 'Пожевать жувачку', time: '12/06/2024', isCompleted: false},
+        {id: 9, key: 'lalamla', title: 'hello world', description: 'Выйти ночью в поле с конем, ночкой темной тихо вдвоем', time: 'April 17, 2024 00:00:00', isCompleted: true},
+        {id: 10, key: 'hahahba', title: 'My name uwewewe onit uwewe', description: 'Посмотреть где можно закупиться по скидке, да так, чтобы еще на послезавтра деньги остались', time: '2024, 10, 2', isCompleted: false},
+        {id: 52, key: 'blablca', title: 'Мне сегодня 7 лет', description: 'Пожевать жувачку', time: '12/06/2024', isCompleted: false},
+
     ]
 
     const getTaskList = () =>{
 
         //toDo
         setTaskList(TempTaskList)
-    };
-
-
-
-    const sortTaskList = () => {
-        for (i in taskList) {
-            console.log()
-        }
     };
 
     const changeTaskStatus = (taskID) => {
@@ -42,8 +45,24 @@ const ModalDefaultTasks = (props) => {
 
     
     useEffect(() => {
+        
         getTaskList()
     }, [])
+
+    useEffect(() => {
+        // Сортировка taskList после загрузки
+        const sortedTaskList = [...taskList].sort((a, b) => {
+            // Сначала сортируем по isCompleted (false сначала)
+            if (a.isCompleted === b.isCompleted) {
+                return 0;
+            } else if (a.isCompleted === false) {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
+        SetSortedTaskList(sortedTaskList);
+    }, [taskList])
 
 
     const [CurrentTask, SetCurrentTask] = useState({});
@@ -66,16 +85,11 @@ const ModalDefaultTasks = (props) => {
 
             <View style = {styles.container}>
                 <FlatList
-                data={taskList}
+                data={SortedTaskList}
                 renderItem = {({item}) => (<MiniTaskBox el = {item} onPressed={() => openTaskModal(item)} />)}
                 style = {styles.flatlist}
                 
                 />
-
-                <Pressable style = {{width: 100, height: 100, backgroundColor: 'red'}}
-                onPress = {() => sortTaskList()}>
-                    <Text>Push</Text>
-                </Pressable>
             </View>
 
             <OneTaskModal 
@@ -84,9 +98,6 @@ const ModalDefaultTasks = (props) => {
                 onStatusChanged= {()=>changeTaskStatus(CurrentTask.id)} 
                 item = {CurrentTask}
             />
-
-            
-
         </Modal>
     );
 }
