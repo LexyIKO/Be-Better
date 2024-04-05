@@ -4,6 +4,8 @@ import styles from '../styles/AuthStyle'
 
 import { useNavigation } from '@react-navigation/native';
 
+import { registerUser } from '../auth/auth';
+
 const Registration = () => {
     const [login, SetLogin] = useState('');
     const [password, SetPassword] = useState('');
@@ -14,7 +16,9 @@ const Registration = () => {
     const navigation = useNavigation();
 
     function Submit(){
-        console.log("Registration submited")
+        if(registerUser(login, password)){
+            navigation.navigate("Main");
+        }
     }
    
     const ValidateForm = () => {

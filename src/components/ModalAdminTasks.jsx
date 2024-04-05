@@ -63,7 +63,7 @@ const ModalAdminTasks = (props) => {
             visible={props.visability}
             onRequestClose={closeModal}
         >
-            <HeaderForModal fontSize = {{fontSize: 24}} onModalClose = {closeModal} title='Задачи от трации'/>
+            <HeaderForModal fontSize = {{fontSize: 32}} onModalClose = {closeModal} title='Задачи от администрации'/>
 
             <View style = {styles.container}>
                 <FlatList

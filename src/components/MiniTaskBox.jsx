@@ -64,7 +64,7 @@ const MiniTaskBox = (props) => {
             <View style = {props.el.isCompleted ? {opacity: 0.5,  padding: 10, width: '100%'}
             : {opacity: 1, padding: 10, width: '100%'}}> 
                 <Text style = {styles.taskBox}>{props.el.title}</Text>
-                <Text style = {styles.timer}>На выполнение: {getRemaningTime()}</Text>
+                <Text style = {styles.timer} adjustsFontSizeToFit = {true}>На выполнение: {getRemaningTime()}</Text>
             </View>
        </Pressable>
     );

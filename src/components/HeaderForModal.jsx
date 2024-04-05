@@ -17,7 +17,7 @@ const HeaderForModal = (props) => {
            >
                 <IconArrowBackCircleOutline color='#C3C3C3' height = '50px' width='50px'/>
            </Pressable>
-           <Text style = {[{color: '#C3C3C3'}, props.fontSize]}>{props.title}</Text>
+           <Text style = {[{color: '#C3C3C3', width: '90%'}, props.fontSize ]} adjustsFontSizeToFit = {true}>{props.title}</Text>
         </View>
     );
 }

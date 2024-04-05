@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Text, SafeAreaView, View, TextInput, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+import { checkToken, loginUser } from '../auth/auth';
 import styles from '../styles/AuthStyle'
 
 const Login = () => {
@@ -11,9 +15,21 @@ const Login = () => {
 
     const navigation = useNavigation();
 
-    function Submit (){
-        console.log("Login Submited")
+    async function Submit (){
+        const isLooggeed = await loginUser(login, password)
+        if( isLooggeed == true){
+            navigation.navigate('Main')
+        }
     }
+
+    useEffect(()=>{
+        const isCheked = checkToken()
+
+        console.log(isCheked);
+        
+    }, [])
+
+    
 
     const ValidateForm = () => {
         let errors = {};

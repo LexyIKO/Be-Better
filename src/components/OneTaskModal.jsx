@@ -70,7 +70,7 @@ const OneTaskModal = (props) => {
                     <Text style = {styles.title}>{props.item.title}</Text>
                     <Text style = {styles.description}>{props.item.description}</Text>
                     <View style = {styles.infoBox}>
-                        <Text style = {styles.timer}>{getRemaningTime()}</Text>
+                        <Text style = {styles.timer} adjustsFontSizeToFit = {true} numberOfLines = {1}>{getRemaningTime()}</Text>
                         <Pressable 
                         style = {styles.button}
                         onPress={ChangeTaskStatus}>
@@ -122,18 +122,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 10,
         width: '100%',
-        justifyContent: 'space-around',
-        paddingHorizontal: 10,
+        justifyContent: 'space-between',
         alignItems: 'center',
+        paddingHorizontal: 20,
         paddingBottom: 10,
     },
     timer: {
         fontSize: 20,
         color: '#C3C3C3',
-        paddingRight: 10,
+        paddingRight: 15,
+        maxWidth: '60%'
     },
     button: {
-        paddingRight: 10
     }
      
 

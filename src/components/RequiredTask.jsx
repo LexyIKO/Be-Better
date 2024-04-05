@@ -71,12 +71,12 @@ const RequiredTsk = (props) => {
 
     return(
        <View style = {[styles.container, props.style]}>
-            <Text style = {styles.title}>Обязательная задача</Text>
+            <Text style = {styles.title} adjustsFontSizeToFit = {true}>Обязательная задача</Text>
             <View style = {styles.taskBox}>
                 <Text style = {styles.taskText}>{Task.title}</Text>
             </View>
             <View style = {styles.infoBox}>
-                <Text style = {styles.timer}>{getRemaningTime()}</Text>
+                <Text style = {styles.timer} adjustsFontSizeToFit = {true} numberOfLines={1}>{getRemaningTime()}</Text>
                 <Pressable 
                 style = {styles.button}
                 onPress={ChangeTaskStatus}>
@@ -92,18 +92,20 @@ const styles = StyleSheet.create({
         display: 'flex',
         backgroundColor: '#545252',
         width: '90%',
-        height: 280,
+        padding: 10,
         alignItems: 'center',
         borderRadius: 10
     },
     title: {
         fontSize: 28, 
         color: '#C3C3C3',
-        marginTop: 10
+        marginTop: 10,
+        width: '90%',
+        textAlign: 'center'
     },
     taskBox: {
         width: '95%',
-        height: 160,
+        padding: 20,
         backgroundColor: '#323232',
         borderRadius: 10,
         marginTop: 10,
@@ -118,18 +120,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 10,
         width: '100%',
-        justifyContent: 'space-around',
-        paddingHorizontal: 10,
+        justifyContent: 'space-between',
         alignItems: 'center'
     },
     timer: {
         fontSize: 20,
         color: '#C3C3C3',
-        width: '70%',
-        paddingLeft: 10
+        maxWidth: '60%',
+        paddingRight: 15
     },
     button: {
-        paddingRight: 10
     }
 
 });

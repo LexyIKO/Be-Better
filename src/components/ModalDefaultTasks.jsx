@@ -81,7 +81,7 @@ const ModalDefaultTasks = (props) => {
             visible={props.visability}
             onRequestClose={closeModal}
         >
-            <HeaderForModal fontSize = {{fontSize: 24}} onModalClose = {closeModal} title='Обычные задачи'/>
+            <HeaderForModal fontSize = {{fontSize: 32}} onModalClose = {closeModal} title='Обычные задачи'/>
 
             <View style = {styles.container}>
                 <FlatList

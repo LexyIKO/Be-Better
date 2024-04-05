@@ -40,7 +40,7 @@ const dark = StyleSheet.create({
     container: {
         display: 'flex',
         height: '100%',
-        backgroundColor: 'black'
+        backgroundColor: 'white'
     },
     Box: {
         display: 'flex',

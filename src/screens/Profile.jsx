@@ -9,6 +9,8 @@ import Top from '../components/Top';
 import IconDoveLeft from '../icons/DoveLeft';
 import IconDoveRight from '../icons/DoveRight';
 
+import { logout, fetchData } from '../auth/auth';
+
 const ProfileScreen = () => {
     const navigation = useNavigation();
 
@@ -19,6 +21,12 @@ const ProfileScreen = () => {
         SetNickname("LexyIKO");
     }
 
+    const handleLogout = () => {
+
+        logout()
+        navigation.navigate("Auth")
+    };
+
     useEffect(()=>{
         getNickname();
     },[]);
@@ -26,13 +34,14 @@ const ProfileScreen = () => {
     return(
         <SafeAreaView style = {styles.container}>
             <Header ScreenTitle='profile'/>
-            <View style={{flexDirection: 'row', marginTop: 50}}>
+            <View style={{flexDirection: 'row', marginTop: "15%"}}>
                 <IconDoveLeft color='#C3C3C3'/>
                 <Text style = {{color: '#C3C3C3', fontSize: 40, paddingHorizontal: 10}}>{Nickname}</Text>
                 <IconDoveRight color='#C3C3C3'/>
             </View>                   
-            <Statistics style = {{marginTop: 60}}/>
-            <Top style={{marginTop: 60}}/>
+            <Statistics style = {{marginTop: '20%'}}/>
+            <Top style={{marginTop: '10%'}}/>
+            <Pressable onPress={handleLogout}><Text>Выйти</Text></Pressable>
         </SafeAreaView>
     );
 }

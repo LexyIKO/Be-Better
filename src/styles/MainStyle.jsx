@@ -39,7 +39,7 @@ import { StyleSheet } from "react-native";
 const dark = StyleSheet.create({
     container: {
         display: 'flex',
-        height: '100%',
+        flex: 1,
         backgroundColor: '#3E3E3E',
         paddingTop: 40,
         alignItems: 'center'
