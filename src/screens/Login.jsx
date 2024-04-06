@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-import { checkToken, loginUser } from '../auth/auth';
+import { loginUser } from '../auth/auth';
 import styles from '../styles/AuthStyle'
 
 const Login = () => {
@@ -16,20 +16,27 @@ const Login = () => {
     const navigation = useNavigation();
 
     async function Submit (){
-        const isLooggeed = await loginUser(login, password)
-        if( isLooggeed == true){
+        const isLogged  = await loginUser(login, password)
+        if(isLogged){
             navigation.navigate('Main')
         }
     }
 
-    useEffect(()=>{
-        const isCheked = checkToken()
-
-        console.log(isCheked);
-        
-    }, [])
-
     
+    useEffect(() => {
+        const checkUserToken = async () => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+            if (token) {
+            navigation.navigate("Main")
+            }
+        } catch (error) {
+            console.log('Failed to load token', error);
+        }
+    };
+
+        checkUserToken();
+    }, []);
 
     const ValidateForm = () => {
         let errors = {};

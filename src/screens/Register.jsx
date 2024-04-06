@@ -15,8 +15,10 @@ const Registration = () => {
 
     const navigation = useNavigation();
 
-    function Submit(){
-        if(registerUser(login, password)){
+    async function Submit(){
+        const isRegistred = await registerUser(login, password) 
+
+        if(isRegistred){
             navigation.navigate("Main");
         }
     }

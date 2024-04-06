@@ -1,8 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import storage from '../storage/storage';
-
 const API_URL = 'http://188.225.86.119';
 
 export const loginUser = async (login, password) => {
@@ -14,53 +12,41 @@ export const loginUser = async (login, password) => {
         console.log(error)
         throw error;
     })
-    const token = response.data.token;
-    const userId = response.data.userId
+    const token = await response.data.token;
+    const userId = await response.data.userId;
 
     
-    // Сохранение токена в AsyncStorag
+    // Сохранение токена в AsyncStorage
     if (token) {
-        storage.save({
-            key: 'loginState',
-            id: '1001',
-            data: {
-              userid: userId,
-              token: token
-            },
-            
+        // Сохраняем токен в AsyncStorage
+        AsyncStorage.multiSet([['token', token],['userId', userId.toString()]])
+          .then(() => {
+            console.log('Токен успешно сохранен в AsyncStorage');
           })
-        return true
+          .catch((error) => {
+            console.log('Ошибка при сохранении токена в AsyncStorage:', error.message);
+          });
       } else {
-        console.log('Попытка сохранить null или undefine в Storage');
-      }  
+        console.log('Попытка сохранить null или undefined в AsyncStorage');
+      }
 
+    
+
+    return true;
   } catch (error) {
+
     throw error;
   }
-
-  return false;
 };
 
 export const logout = async () => {
-    
-    try{
-        storage.remove({
-            key: 'loginState',
-            id: '1001'
-        });
-
-        
-    }catch (error) {
-        console.log('Неудача - ', error)
+    try {
+      // Удаление токена из AsyncStorage
+      await AsyncStorage.multiRemove(['token', 'userId']);
+    } catch (error) {
+      console.error('Logout failed', error);
+      throw error;
     }
-    
-    // try {
-    //   // Удаление токена из AsyncStorage
-    //   await AsyncStorage.removeItem('token');
-    // } catch (error) {
-    //   console.error('Logout failed', error);
-    //   throw error;
-    // }
 
   };
   
@@ -99,44 +85,17 @@ export const registerUser = async (username, password) => {
       console.log('Registration failed - ', error.message);
       throw error;
     }
-
-    checkToken()
   };
 
-export const checkToken = () => {
-
-    let temp;
-
-    storage
-    .getAllDataForKey('loginState')
-    .then(ret => {
-        console.log('sososososoos- ', ret)
-        temp = ret;
-    })
-    .catch(err => {
-        
-    switch (err.name) {
-        case 'NotFoundError':
-        // TODO;
-        break;
-        case 'ExpiredError':
-        // TODO
-        break;
-    }
-    });
-
-    return temp
-
-//   try {
-//     const token = await AsyncStorage.getItem('token');
-//     return token;
-//   } catch (error) {
-//     console.log('Failed to load token', error);
-//     throw error;
-//   }
+export const checkToken = async () => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    return token;
+  } catch (error) {
+    console.log('Failed to load token', error);
+    throw error;
+  }
 };
-
-
 
 
 

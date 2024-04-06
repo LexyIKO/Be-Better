@@ -41,7 +41,16 @@ const ProfileScreen = () => {
             </View>                   
             <Statistics style = {{marginTop: '20%'}}/>
             <Top style={{marginTop: '10%'}}/>
-            <Pressable onPress={handleLogout}><Text>Выйти</Text></Pressable>
+            <Pressable onPress={handleLogout} style = {{marginTop: '10%',}}>
+                <Text style = {{
+                    paddingVertical: 20,
+                    paddingHorizontal: 50,
+                    borderRadius: 10,
+                    color: '#C3C3C3',
+                    fontSize: 24,
+                    backgroundColor: "#545252"
+                }}>Выйти</Text>
+            </Pressable>
         </SafeAreaView>
     );
 }
