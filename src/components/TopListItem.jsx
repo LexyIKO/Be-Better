@@ -21,7 +21,7 @@ const TopListItem = (props) => {
                 <Text style={styles.text}>{props.itemData.nickname}</Text>
             </View>
             
-            <Text style={[styles.text, {width: 50, textAlign: 'right'}]}>{props.itemData.doneTasks}</Text>
+            <Text style={[styles.text, {textAlign: 'right'}]}>{props.itemData.doneTasks}</Text>
         </View>
     );
 }
