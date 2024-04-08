@@ -1,5 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 
 const API_URL = 'http://188.225.86.119';
 
@@ -9,7 +10,7 @@ export const loginUser = async (login, password) => {
     .then(res => {
         return res
     }).catch(error => {
-        console.log(error)
+        Alert.alert('Ошибка авторизации')
         throw error;
     })
     const token = await response.data.token;
@@ -21,13 +22,13 @@ export const loginUser = async (login, password) => {
         // Сохраняем токен в AsyncStorage
         AsyncStorage.multiSet([['token', token],['userId', userId.toString()]])
           .then(() => {
-            console.log('Токен успешно сохранен в AsyncStorage');
+            Alert.alert('Токен успешно сохранен в AsyncStorage');
           })
           .catch((error) => {
-            console.log('Ошибка при сохранении токена в AsyncStorage:', error.message);
+            Alert.alert('Ошибка при сохранении токена в AsyncStorage:', error.message);
           });
       } else {
-        console.log('Попытка сохранить null или undefined в AsyncStorage');
+        Alert.alert('Попытка сохранить null или undefined в AsyncStorage');
       }
 
     
@@ -44,7 +45,7 @@ export const logout = async () => {
       // Удаление токена из AsyncStorage
       await AsyncStorage.multiRemove(['token', 'userId']);
     } catch (error) {
-      console.error('Logout failed', error);
+        Alert.alert('Logout failed', error);
       throw error;
     }
 
@@ -62,27 +63,25 @@ export const registerUser = async (username, password) => {
             'Content-Type': 'application/json'
           }
         });
-      const token = response.data;
-
-      console.log('Repsonse - ', response)
-      console.log('Token - ', token)
+        const token = await response.data.token;
+        const userId = await response.data.userId;
 
       if (token) {
         // Сохраняем токен в AsyncStorage
-        AsyncStorage.setItem('token', token)
+        AsyncStorage.multiSet([['token', token],['userId', userId.toString()]])
           .then(() => {
-            console.log('Токен успешно сохранен в AsyncStorage');
+            Alert.alert('Токен успешно сохранен в AsyncStorage');
           })
           .catch((error) => {
-            console.log('Ошибка при сохранении токена в AsyncStorage:', error);
+            Alert.alert('Ошибка при сохранении токена в AsyncStorage:', error.message);
           });
       } else {
-        console.log('Попытка сохранить null или undefined в AsyncStorage');
+        Alert.alert('Попытка сохранить null или undefined в AsyncStorage');
       }
     
       return true;
     } catch (error) {
-      console.log('Registration failed - ', error.message);
+        Alert.alert('Registration failed - ', error.message);
       throw error;
     }
   };
@@ -92,7 +91,7 @@ export const checkToken = async () => {
     const token = await AsyncStorage.getItem('token');
     return token;
   } catch (error) {
-    console.log('Failed to load token', error);
+    Alert.alert('Failed to load token', error);
     throw error;
   }
 };
@@ -106,7 +105,7 @@ export const fetchData = async (address, body = undefined) => {
       const token = await AsyncStorage.getItem('token');
       if (!token) {
         
-        return console.log("Пользователь не авторизован");
+        return Alert.alert("Пользователь не авторизован");
       }
   
       const response = await axios.get(`${API_URL}${address}`, {
