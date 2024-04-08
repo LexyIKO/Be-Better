@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Text, View, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
 
+import ModalConfirm from './ModalConfirm';
 import TaskNotCompleted from '../icons/TaskNotComleted';
 import TaskCompleted from '../icons/TaskCompleted';
 
@@ -69,6 +70,17 @@ const RequiredTsk = (props) => {
         GetRequiredTask()
     },[]);
 
+    const [ModalConfirmVisibility, SetModalConfirmVisibility] = useState(false);
+
+    function changeConfirmModalStatus() {
+        SetModalConfirmVisibility(!ModalConfirmVisibility);
+    };
+
+
+    const handleConfirmation = () => {
+        // TODO
+    };
+
     return(
        <View style = {[styles.container, props.style]}>
             <Text style = {styles.title} adjustsFontSizeToFit = {true}>Обязательная задача</Text>
@@ -79,8 +91,11 @@ const RequiredTsk = (props) => {
                 <Text style = {styles.timer} adjustsFontSizeToFit = {true} numberOfLines={1}>{getRemaningTime()}</Text>
                 <Pressable 
                 style = {styles.button}
-                onPress={ChangeTaskStatus}>
-                {Task.isCompleted ? <TaskCompleted /> : <TaskNotCompleted />}
+                onPress={changeConfirmModalStatus}
+                // onPress={ChangeTaskStatus}
+                >
+                    {Task.isCompleted ? <TaskCompleted /> : <TaskNotCompleted />}
+                    <ModalConfirm onConfirm={handleConfirmation} visibility={ModalConfirmVisibility} onCloseModal={changeConfirmModalStatus}/>
                 </Pressable>
             </View>
        </View>
