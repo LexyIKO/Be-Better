@@ -4,6 +4,8 @@ import MiniTaskBox from './MiniTaskBox';
 import HeaderForModal from './HeaderForModal'
 import OneTaskModal from './OneTaskModal';
 
+import { changeTaskStatus, getTaskList } from '../Requests/requests';
+
 const ModalDefaultTasks = (props) => {
  
     const [taskList, setTaskList] = useState([]);
@@ -31,22 +33,51 @@ const ModalDefaultTasks = (props) => {
 
     ]
 
-    const getTaskList = () =>{
+   
 
-        //toDo
-        setTaskList(TempTaskList)
-    };
+    const reverseTaskStatus = async (taskID, status) => {
+        try {
+            await changeTaskStatus(taskID, !status)
 
-    const changeTaskStatus = (taskID) => {
-        //toDo
-        getTaskList();
+            SetOneTaskVisible(false);
+            getFirstTimeTaskList();
+        } catch (error) {
+            Alert.alert('Ошибка: ', error.message || 'Неизвестная ошибка')
+        }
+
+        
     };
     
+    const getFirstTimeTaskList = async () =>{
+        const moscowOffset = 3 * 60 * 60 * 1000; // в миллисекундах
+        const res = await getTaskList();
+        let item = []
+        if(res != undefined){
+            for (i in res){
+                if(res[i].isRequired === false && res[i].isActive === true){
 
+                    const createdAtDate = new Date(res[i].createdAt);
+                    const createdAtMoscow = new Date(createdAtDate.getTime() + moscowOffset);
+                    
+                    const endDate = new Date(createdAtMoscow.getTime() + res[i].duration * 24 * 60 * 60 * 1000);
+
+                    let temp = {
+                        'id': res[i].id,
+                        'title': res[i].title,
+                        'description': res[i].description,
+                        'time': endDate,
+                        'isCompleted': res[i].UserTasks.isDone
+                    }
+                    item.push(temp);
+                }
+            }
+        }
+        setTaskList(item)
+    }
     
     useEffect(() => {
-        
-        getTaskList()
+
+        getFirstTimeTaskList();
     }, [])
 
     useEffect(() => {
@@ -95,7 +126,7 @@ const ModalDefaultTasks = (props) => {
             <OneTaskModal 
                 visibility={OneTaskVisability} 
                 onCloseModal={() => SetOneTaskVisible(false)}
-                onStatusChanged= {()=>changeTaskStatus(CurrentTask.id)} 
+                onStatusChanged= {()=>reverseTaskStatus(CurrentTask.id, CurrentTask.isCompleted)} 
                 item = {CurrentTask}
             />
         </Modal>

@@ -22,9 +22,10 @@ const Header = (props) => {
             </View>
             <Pressable
             onPress={handlerProfile}>
-                {props.ScreenTitle === 'main' 
+            {props.ScreenTitle === 'main' 
                 ? <IconProfile color='#C3C3C3' height = '70px' width='70px' style={styles.icon}/> 
-                : <IconHome color='#C3C3C3' height = '75px' width='75px' style={styles.icon}/>}
+                : <IconHome color='#C3C3C3' height = '75px' width='75px' style={styles.icon}/>
+            }
             </Pressable>
         </View>
     );

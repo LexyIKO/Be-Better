@@ -22,10 +22,10 @@ export const loginUser = async (login, password) => {
         // Сохраняем токен в AsyncStorage
         AsyncStorage.multiSet([['token', token],['userId', userId.toString()]])
           .then(() => {
-            Alert.alert('Токен успешно сохранен в AsyncStorage');
+
           })
           .catch((error) => {
-            Alert.alert('Ошибка при сохранении токена в AsyncStorage:', error.message);
+            Alert.alert('Ошибка входа', error.message);
           });
       } else {
         Alert.alert('Попытка сохранить null или undefined в AsyncStorage');
@@ -70,18 +70,18 @@ export const registerUser = async (username, password) => {
         // Сохраняем токен в AsyncStorage
         AsyncStorage.multiSet([['token', token],['userId', userId.toString()]])
           .then(() => {
-            Alert.alert('Токен успешно сохранен в AsyncStorage');
+            
           })
           .catch((error) => {
-            Alert.alert('Ошибка при сохранении токена в AsyncStorage:', error.message);
+            Alert.alert('Ошибка регистрации: ', error.message);
           });
       } else {
-        Alert.alert('Попытка сохранить null или undefined в AsyncStorage');
+        Alert.alert('Ошибка регистрации, попробуйте еще раз');
       }
     
       return true;
     } catch (error) {
-        Alert.alert('Registration failed - ', error.message);
+      Alert.alert('Ошибка регистрации, попробуйте позже');
       throw error;
     }
   };
@@ -91,14 +91,14 @@ export const checkToken = async () => {
     const token = await AsyncStorage.getItem('token');
     return token;
   } catch (error) {
-    Alert.alert('Failed to load token', error);
+    Alert.alert('Ошибка сети, попробуйте позже');
     throw error;
   }
 };
 
 
 
-// let запрос_пример = fetchData('/task/2')
+// let запрос_пример = await fetchData('/task/2')
 
 export const fetchData = async (address, body = undefined) => {
     try {

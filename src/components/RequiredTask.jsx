@@ -1,25 +1,39 @@
 import { useState, useEffect } from 'react';
-import { Text, View, Pressable } from 'react-native';
+import { Text, View, Pressable, Alert } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 import TaskNotCompleted from '../icons/TaskNotComleted';
 import TaskCompleted from '../icons/TaskCompleted';
 
+import { fetchData } from '../auth/auth';
+
 
 const RequiredTsk = (props) => {
     const [Task, SetTask] = useState({});
-    
-    let tempTask = {
-        id: 0,
-        title: 'Позвонить человеку с которым вы давно не общались и узнать как его жизнь', 
-        time: '04/03/2024',
-        isCompleted: true
-    }
 
-    function GetRequiredTask (){
+    async function GetRequiredTask (){
 
-        //toDo
-        SetTask(tempTask)
+        try {
+            const res = await fetchData('/tasks/all/required')
+            
+            //Для даты
+            const createdAtDate = new Date(res.createdAt);
+            const moscowOffset = 3 * 60 * 60 * 1000; // в миллисекундах
+            const createdAtMoscow = new Date(createdAtDate.getTime() + moscowOffset);
+            const endDate = new Date(createdAtMoscow.getTime() + res.duration * 24 * 60 * 60 * 1000);
+
+            let task = {
+                id: res.id,
+                title: res.description,
+                time: endDate,
+                isCompleted: false,
+            }
+
+            SetTask(task)
+
+        } catch (error ){
+            Alert.alert('Ошибка: ', error.message || 'Неизвестная ошибка')
+        }
     }
 
     function getNoun(number, nominative, accusative, genitive) {
@@ -59,10 +73,8 @@ const RequiredTsk = (props) => {
     
 
     function ChangeTaskStatus (){
-        SetTask(prevTask => ({
-            ...prevTask, // сохраняем все остальные свойства без изменений
-            isCompleted: !prevTask.isCompleted // изменяем только isCompleted на противоположное значение
-        }));
+        //to do
+
     }
 
     useEffect(()=>{
