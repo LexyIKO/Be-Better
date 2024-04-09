@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
+import { getUserStatistics } from '../Requests/requests';
+
 const Statistics = (props) => {
 
-    const [TaskQuantity, SetTaskQuantity] = useState({});
+    const [TaskQuantity, SetTaskQuantity] = useState();
 
-    let TestData = {Common: 5, Required: 2, AdminTasks: 12};
-
-    function getTaskQuantity() {
-        // TODO
-        SetTaskQuantity(TestData);
+    const getTaskQuantity = async () => {
+        const userStatistics = await getUserStatistics();
+        SetTaskQuantity(userStatistics);
     }
 
     useEffect(()=>{
@@ -22,17 +22,12 @@ const Statistics = (props) => {
 
             <View style = {styles.statisticsLine}>
                 <Text style = {styles.text}>Обычные</Text>
-                <Text style = {styles.text}>{TaskQuantity.Common}</Text>
+                <Text style = {styles.text}>{TaskQuantity?.common}</Text>
             </View>
 
             <View style = {styles.statisticsLine}>
-                <Text style = {styles.text}>Обязательные</Text>
-                <Text style = {styles.text}>{TaskQuantity.Required}</Text>
-            </View>
-
-            <View style = {styles.statisticsLine}>
-                <Text style = {styles.text}>От администрации</Text>
-                <Text style = {styles.text}>{TaskQuantity.AdminTasks}</Text>
+                <Text style = {styles.text}>Пропущенные</Text>
+                <Text style = {styles.text}>{TaskQuantity?.skipped}</Text>
             </View>
         </View>
     );

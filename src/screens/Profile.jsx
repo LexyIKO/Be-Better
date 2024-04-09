@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Text, SafeAreaView, View, TextInput, Pressable } from 'react-native';
+import { Text, SafeAreaView, View, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/MainStyle'
 
@@ -11,15 +11,16 @@ import IconDoveLeft from '../icons/DoveLeft';
 import IconDoveRight from '../icons/DoveRight';
 
 import { logout, fetchData } from '../auth/auth';
+import { getUserNickname } from '../Requests/requests';
 
 const ProfileScreen = () => {
     const navigation = useNavigation();
 
     const [Nickname, SetNickname] = useState();
 
-    function getNickname() {
-        // TODO
-        SetNickname("LexyIKO");
+    const getNickname = async () => {
+        const nickname = await getUserNickname();
+        SetNickname(nickname);
     }
 
     const handleLogout = () => {

@@ -15,7 +15,7 @@ const RequiredTsk = (props) => {
     async function GetRequiredTask (){
 
         try {
-            const res = await fetchData('/tasks/all/required')
+            const res = await fetchData('/tasks/required/most_required')
             
             //Для даты
             const createdAtDate = new Date(res.createdAt);

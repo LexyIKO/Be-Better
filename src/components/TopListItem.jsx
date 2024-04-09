@@ -1,21 +1,9 @@
-import { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 const TopListItem = (props) => {
 
-    const [UserId, SetUserId] = useState();
-
-    function getUserId() {
-        // TODO
-        SetUserId(7);
-    }
-
-    useEffect(()=>{
-        getUserId();
-    },[]);
-
     return (
-        <View style={[styles.container, UserId === props.itemData.id ? styles.spotlight : null]}>
+        <View style={[styles.container, Number(props.userId) === props.itemData.id ? styles.spotlight : null]}>
             <View style={{flexDirection: 'row'}}>
                 <Text style={[{marginRight: 10, width: 30, textAlign: 'center'}, styles.text]}>{props.itemData.placement}</Text>
                 <Text style={styles.text}>{props.itemData.nickname}</Text>
