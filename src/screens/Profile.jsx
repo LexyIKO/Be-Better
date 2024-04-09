@@ -3,6 +3,7 @@ import { Text, SafeAreaView, View, TextInput, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/MainStyle'
 
+import ModalConfirm from '../components/ModalConfirm';
 import Header from '../components/Header';
 import Statistics from '../components/Statistics';
 import Top from '../components/Top';
@@ -31,6 +32,16 @@ const ProfileScreen = () => {
         getNickname();
     },[]);
 
+    const [ModalConfirmVisibility, SetModalConfirmVisibility] = useState(false);
+
+    function changeConfirmModalStatus() {
+        SetModalConfirmVisibility(!ModalConfirmVisibility);
+    };
+
+    const handleConfirmation = () => {
+        handleLogout();
+    };
+
     return(
         <SafeAreaView style = {styles.container}>
             <Header ScreenTitle='profile'/>
@@ -41,7 +52,7 @@ const ProfileScreen = () => {
             </View>                   
             <Statistics style = {{marginTop: '20%'}}/>
             <Top style={{marginTop: '10%'}}/>
-            <Pressable onPress={handleLogout} style = {{marginTop: '10%',}}>
+            <Pressable onPress={changeConfirmModalStatus} style = {{marginTop: '10%',}}>
                 <Text style = {{
                     paddingVertical: 20,
                     paddingHorizontal: 50,
@@ -50,6 +61,7 @@ const ProfileScreen = () => {
                     fontSize: 24,
                     backgroundColor: "#545252"
                 }}>Выйти</Text>
+                <ModalConfirm onConfirm={handleConfirmation} visibility={ModalConfirmVisibility} onCloseModal={changeConfirmModalStatus}/>
             </Pressable>
         </SafeAreaView>
     );
