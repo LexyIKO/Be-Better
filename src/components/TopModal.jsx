@@ -3,16 +3,16 @@ import { FlatList, Modal, View, StyleSheet, Text } from "react-native";
 
 import TopListItem from "./TopListItem";
 import HeaderForModal from "./HeaderForModal";
+import { getCurrUserTopInfo } from "../Requests/requests";
 
 const TopModal = (props) => {
 
-    const [UserPlacementInfo, SetUserPlasementInfo] = useState({placement: 0, nickname: 'Noname', doneTasks: 0});
+    const [UserPlacementInfo, SetUserPlasementInfo] = useState();
 
-    let testUserPlacementInfo = {placement: 52, nickname: 'Me', doneTasks: 12};
-
-    function getUserPlacementInfo() {
-        // TODO
-        SetUserPlasementInfo(testUserPlacementInfo);
+    async function getUserPlacementInfo() {
+        const placementUserData = await getCurrUserTopInfo();
+        SetUserPlasementInfo(placementUserData);
+        console.log(UserPlacementInfo);
     };
 
     function closeModal() {
@@ -36,16 +36,16 @@ const TopModal = (props) => {
                     <FlatList
                         data={props.displayableInfo}
                         showsVerticalScrollIndicator={false}
-                        renderItem={({item}) => (<TopListItem itemData={item}/>)}
+                        renderItem={({item}) => (<TopListItem itemData={item} userId={props.userId}/>)}
                     />
                 </View>
                 <Text style={[styles.text, {marginTop: 5, marginBottom: 5}]}>Ваша позиция</Text>
                 <View style={styles.userPlacement}>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={[{marginRight: 10}, styles.text]}>{UserPlacementInfo.placement}</Text>
-                        <Text style={styles.text}>{UserPlacementInfo.nickname}</Text>
+                        <Text style={[{marginRight: 10}, styles.text]}>{UserPlacementInfo?.placement}</Text>
+                        <Text style={styles.text}>{UserPlacementInfo?.user.login}</Text>
                     </View>
-                    <Text style={styles.text}>{UserPlacementInfo.doneTasks}</Text>
+                    <Text style={styles.text}>{UserPlacementInfo?.user.positiveRating}</Text>
                 </View>
             </View>            
         </Modal>

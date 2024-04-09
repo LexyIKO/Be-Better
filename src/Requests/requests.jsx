@@ -37,6 +37,42 @@ export const isUserAdmin = async () => {
     }
 }
 
+export const getUserNickname = async () => {
+    try {
+        const res = await getAllAboutUser();
+        return res.login;
+    } catch (error) {
+        Alert.alert('Ошибка сети:', error.message || 'Произошла неизвестная ошибка');
+    }
+}
+
+export const getUserStatistics = async () => {
+    try {
+        const userData = await getAllAboutUser();
+        const userStatistics = {common: userData.positiveRating, skipped: userData.negativeRating};
+        return userStatistics;
+    } catch (error) {
+        Alert.alert('Ошибка: ', error.message || 'Неизвестная ошибка')
+    }
+}
+
+export const getTopUsers = async () => {
+    try {
+        return await fetchData('/users/position/all');
+    } catch (error) {
+        Alert.alert('Ошибка: ', error.message || 'Неизвестная ошибка')
+    }
+}
+
+export const getCurrUserTopInfo = async () => {
+    try {
+        const userId = await getUserId();
+        const currUser = await fetchData(`/users/position/current/${userId}`);
+        return currUser;
+    } catch (error) {
+        Alert.alert('Ошибка: ', error.message || 'Неизвестная ошибка')
+    }
+}
 
 export const addNewTask = async (body) => {
     try {
