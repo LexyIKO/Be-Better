@@ -58,7 +58,7 @@ const OneTaskModal = (props) => {
     };
 
     const handleConfirmation = () => {
-        // TODO
+        props.onStatusChanged();
     };
 
     return(

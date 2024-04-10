@@ -30,6 +30,7 @@ const ModalAddNewTask = (props) => {
                 'duration' : Number(Duration),
                 'isRequired' : isRequired,
                 'isDeletable' : isDeletable,
+                'isFromAdmin' : isFromAdmin,
                 'isActive' : isActive               
             })
 

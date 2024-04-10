@@ -12,7 +12,6 @@ const TopModal = (props) => {
     async function getUserPlacementInfo() {
         const placementUserData = await getCurrUserTopInfo();
         SetUserPlasementInfo(placementUserData);
-        console.log(UserPlacementInfo);
     };
 
     function closeModal() {

@@ -1,35 +1,66 @@
 import { useState, useEffect } from 'react';
-import { Text, SafeAreaView, View, TextInput, FlatList, Pressable, Modal, StyleSheet } from 'react-native';
+import { Text, SafeAreaView, View, TextInput, FlatList, Alert, Modal, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native';
 import MiniTaskBox from './MiniTaskBox';
 import HeaderForModal from './HeaderForModal'
 import OneTaskModal from './OneTaskModal';
+
+import { getTaskList, changeTaskStatus } from '../Requests/requests';
 
 const ModalAdminTasks = (props) => {
  
     const [taskList, setTaskList] = useState([]);
     const [SortedTaskList, SetSortedTaskList] = useState([])
 
-    const [OneTaskVisability, SetOneTaskVisible] = useState(false); 
+    const [OneTaskVisability, SetOneTaskVisible] = useState(false);
+
+    const reverseTaskStatus = async (taskID, status) => {
+        try {
+            await changeTaskStatus(taskID, !status)
+
+            SetOneTaskVisible(false);
+            getFirstTimeTaskList();
+        } catch (error) {
+            Alert.alert('Ошибка: ', error.message || 'Неизвестная ошибка')
+        }
+
+        
+    };
+
+    const getFirstTimeTaskList = async () =>{
+        const moscowOffset = 3 * 60 * 60 * 1000; // в миллисекундах
+        const res = await getTaskList();
+        let item = []
+        if(res != undefined){
+            for (i in res){
+                if(res[i].isRequired === false && res[i].isActive === true && res[i].isFromAdmin === true){
+
+                    const createdAtDate = new Date(res[i].createdAt);
+                    const createdAtMoscow = new Date(createdAtDate.getTime() + moscowOffset);
+                    
+                    const endDate = new Date(createdAtMoscow.getTime() + res[i].duration * 24 * 60 * 60 * 1000);
+
+                    let temp = {
+                        'id': res[i].id,
+                        'title': res[i].title,
+                        'description': res[i].description,
+                        'time': endDate,
+                        'isCompleted': res[i].UserTasks.isDone
+                    }
+                    item.push(temp);
+                }
+            }
+        }
+        setTaskList(item)
+    }
 
     const closeModal = () => {
         props.onCloseModal();
     };
 
-    let TempTaskList = [       
-        {id: 0, key: 'lalala', title: 'Красавица и чудовище', description: 'Помочь двум людям, один из должен вам нравиться, другой - нет', time: 'April 17, 2024 00:00:00', isCompleted: true},
-        {id: 1, key: 'hahaha', title: 'Короли болота', description: 'Уберитесь у себя дома, пожалуйста, наконце-то уже!', time: '2024, 10, 2', isCompleted: false},
-        {id: 2, key: 'blabla', title: 'Речное чудище', description: 'Сходи в душ, помой голову, уложи волосы, не позорься!', time: '12/06/2024', isCompleted: false},
-    ]
-
-    const getTaskList = () =>{
-        
-        //toDo
-        setTaskList(TempTaskList)
-    };
-
     useEffect(() => {
-        getTaskList()
+
+        getFirstTimeTaskList();
     }, [])
 
     useEffect(() => {
@@ -76,7 +107,8 @@ const ModalAdminTasks = (props) => {
 
             <OneTaskModal 
                 visibility={OneTaskVisability} 
-                onCloseModal={() => SetOneTaskVisible(false)} 
+                onCloseModal={() => SetOneTaskVisible(false)}
+                onStatusChanged= {()=>reverseTaskStatus(CurrentTask.id, CurrentTask.isCompleted)} 
                 item = {CurrentTask}
             />
 

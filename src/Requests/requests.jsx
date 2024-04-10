@@ -147,7 +147,7 @@ export const changeTaskStatus = async (taskId, status) => {
         const userId = await getUserId();
         
 
-        const response = await axios.post(`${API_URL}/users/task/change_status`, 
+        const response = await axios.put(`${API_URL}/users/task/change_status`, 
             { 
                 "userId": userId,
                 "taskId": taskId,
@@ -159,8 +159,8 @@ export const changeTaskStatus = async (taskId, status) => {
             }
         });
 
-        if (response.status !== 201) {
-            throw new Error(`Ошибка при изменении статуса задачи: ${response.statusText}`);
+        if (response.status !== 200) {
+            throw new Error(`Ошибка при изменении статуса задачи: ${response.status}`);
         }
         
 

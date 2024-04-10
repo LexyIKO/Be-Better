@@ -7,6 +7,7 @@ import TaskNotCompleted from '../icons/TaskNotComleted';
 import TaskCompleted from '../icons/TaskCompleted';
 
 import { fetchData } from '../auth/auth';
+import { changeTaskStatus, getUserId } from '../Requests/requests';
 
 
 const RequiredTsk = (props) => {
@@ -23,11 +24,25 @@ const RequiredTsk = (props) => {
             const createdAtMoscow = new Date(createdAtDate.getTime() + moscowOffset);
             const endDate = new Date(createdAtMoscow.getTime() + res.duration * 24 * 60 * 60 * 1000);
 
+
+            const userId = await getUserId();
+            
+            let tempIsCompleted = false
+
+
+            for(i in res.users){
+                if(res.users[i].UserTasks.userId == userId){
+                    tempIsCompleted = Boolean(res.users[i].UserTasks.isDone)
+                    break;
+                }
+            }
+
+
             let task = {
                 id: res.id,
                 title: res.description,
                 time: endDate,
-                isCompleted: false,
+                isCompleted: tempIsCompleted,
             }
 
             SetTask(task)
@@ -36,6 +51,18 @@ const RequiredTsk = (props) => {
             Alert.alert('Ошибка: ', error.message || 'Неизвестная ошибка')
         }
     }
+
+    const reverseTaskStatus = async (taskID, status) => {
+        try {
+            const res = await changeTaskStatus(taskID, !status)
+
+            GetRequiredTask();
+        } catch (error) {
+            Alert.alert('Ошибка: ', error.message || 'Неизвестная ошибка')
+        }
+
+        
+    };
 
     function getNoun(number, nominative, accusative, genitive) {
         let absNumber = Math.round(number);
@@ -71,12 +98,6 @@ const RequiredTsk = (props) => {
         }
         return `${getNoun(dayDiff, "Остался", "Осталось", "Осталось")}: `+ dayDiff + ` ${getNoun(dayDiff, "день", "дня", "дней")}`;
     }
-    
-
-    function ChangeTaskStatus (){
-        //to do
-
-    }
 
     useEffect(()=>{
         GetRequiredTask()
@@ -90,7 +111,7 @@ const RequiredTsk = (props) => {
 
 
     const handleConfirmation = () => {
-        // TODO
+        reverseTaskStatus(Task.id, Task.isCompleted)
     };
 
     return(
@@ -104,7 +125,6 @@ const RequiredTsk = (props) => {
                 <Pressable 
                 style = {styles.button}
                 onPress={changeConfirmModalStatus}
-                // onPress={ChangeTaskStatus}
                 >
                     {Task.isCompleted ? <TaskCompleted /> : <TaskNotCompleted />}
                     <ModalConfirm onConfirm={handleConfirmation} visibility={ModalConfirmVisibility} onCloseModal={changeConfirmModalStatus}/>

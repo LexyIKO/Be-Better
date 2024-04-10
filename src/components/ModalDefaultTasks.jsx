@@ -17,23 +17,6 @@ const ModalDefaultTasks = (props) => {
         props.onCloseModal();
     };
 
-    let TempTaskList = [       
-        {id: 0, key: 'lalala', title: 'hello world', description: 'Выйти ночью в поле с конем, ночкой темной тихо вдвоем', time: '2024-04-09T00:00:00Z', isCompleted: true},
-        {id: 1, key: 'hahaha', title: 'My name uwewewe onit uwewe', description: 'Посмотреть где можно закупиться по скидке, да так, чтобы еще на послезавтра деньги остались', time: '2024, 10, 2', isCompleted: false},
-        {id: 2, key: 'blabla', title: 'Мне сегодня 7 лет', description: 'Пожевать жувачку', time: '12/06/2024', isCompleted: false},
-        {id: 33, key: 'lalasla', title: 'hello world', description: 'Выйти ночью в поле с конем, ночкой темной тихо вдвоем', time: 'April 17, 2024 00:00:00', isCompleted: true},
-        {id: 4, key: 'hahafha', title: 'My name uwewewe onit uwewe', description: 'Посмотреть где можно закупиться по скидке, да так, чтобы еще на послезавтра деньги остались', time: '2024, 10, 2', isCompleted: false},
-        {id: 5, key: 'blablga', title: 'Мне сегодня 7 лет', description: 'Пожевать жувачку', time: '12/06/2024', isCompleted: false},
-        {id: 6, key: 'lalajla', title: 'hello world', description: 'Выйти ночью в поле с конем, ночкой темной тихо вдвоем', time: 'April 17, 2024 00:00:00', isCompleted: true},
-        {id: 7, key: 'hahakha', title: 'My name uwewewe onit uwewe', description: 'Посмотреть где можно закупиться по скидке, да так, чтобы еще на послезавтра деньги остались', time: '2024, 10, 2', isCompleted: false},
-        {id: 8, key: 'blab;lla', title: 'Мне сегодня 7 лет', description: 'Пожевать жувачку', time: '12/06/2024', isCompleted: false},
-        {id: 9, key: 'lalamla', title: 'hello world', description: 'Выйти ночью в поле с конем, ночкой темной тихо вдвоем', time: 'April 17, 2024 00:00:00', isCompleted: true},
-        {id: 10, key: 'hahahba', title: 'My name uwewewe onit uwewe', description: 'Посмотреть где можно закупиться по скидке, да так, чтобы еще на послезавтра деньги остались', time: '2024, 10, 2', isCompleted: false},
-        {id: 52, key: 'blablca', title: 'Мне сегодня 7 лет', description: 'Пожевать жувачку', time: '12/06/2024', isCompleted: false},
-
-    ]
-
-   
 
     const reverseTaskStatus = async (taskID, status) => {
         try {
@@ -54,7 +37,7 @@ const ModalDefaultTasks = (props) => {
         let item = []
         if(res != undefined){
             for (i in res){
-                if(res[i].isRequired === false && res[i].isActive === true){
+                if(res[i].isRequired === false && res[i].isActive === true && res[i].isFromAdmin === false){
 
                     const createdAtDate = new Date(res[i].createdAt);
                     const createdAtMoscow = new Date(createdAtDate.getTime() + moscowOffset);
@@ -126,7 +109,7 @@ const ModalDefaultTasks = (props) => {
             <OneTaskModal 
                 visibility={OneTaskVisability} 
                 onCloseModal={() => SetOneTaskVisible(false)}
-                onStatusChanged= {()=>reverseTaskStatus(CurrentTask.id, CurrentTask.isCompleted)} 
+                onStatusChanged= {()=>reverseTaskStatus(CurrentTask.id, CurrentTask.isCompleted)}
                 item = {CurrentTask}
             />
         </Modal>
